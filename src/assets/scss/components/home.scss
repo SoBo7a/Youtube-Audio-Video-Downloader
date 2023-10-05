@@ -59,9 +59,16 @@
     }
   }
 
+  .url-list-container {
+    display: flex;
+    flex-direction: column; /* Display URL list vertically */
+    width: 100%; /* Ensure full width */
+  }
+  
   .url-list {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     margin-top: 10px;
 
     .url-item {

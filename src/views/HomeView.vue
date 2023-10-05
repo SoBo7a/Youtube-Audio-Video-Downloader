@@ -20,10 +20,13 @@
       </button>
 
       <!-- List of URLs to download -->
-      <div class="url-list">
-        <div v-for="(url, index) in urlList" :key="index" class="url-item">
-          {{ url.title }}
-          <font-awesome-icon :icon="['fas', 'times']" @click="removeUrlFromList(index)" class="remove-icon" />
+      <br>
+      <div class="url-list-container">
+        <div class="url-list">
+          <div v-for="(url, index) in urlList" :key="index" class="url-item">
+            <a :href="url.url" target="_blank">{{ url.title }}</a>
+            <font-awesome-icon :icon="['fas', 'times']" @click="removeUrlFromList(index)" class="remove-icon" />
+          </div>
         </div>
       </div>
     </div>
@@ -37,6 +40,7 @@
 import axios from 'axios'; // Import Axios for making HTTP requests
 import NotificationComponent from '../components/NotificationComponent.vue'; // Import the Notification component
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { ipcRenderer } from 'electron';
 
 export default {
   components: {
@@ -88,15 +92,13 @@ export default {
       for (const urlObject of this.urlList) {
         const url = urlObject.url;
         try {
-          // Make a POST request to your Express server to trigger the video download
-          // eslint-disable-next-line
-          const response = await axios.post('http://localhost:3000/downloadVideo', {
+          // Use IPC to trigger video download in the main process
+          ipcRenderer.send('download-video', {
             videoUrl: url,
-            quality: this.videoQuality, // Pass the selected quality to the server
-            audioOnly: this.downloadAudioOnly, // Pass the download mode to the server
+            quality: this.videoQuality, // Pass the selected quality
+            audioOnly: this.downloadAudioOnly, // Pass the download mode
           });
 
-          // Handle the response from the server
           this.showNotification(`Video from ${urlObject.title} downloaded successfully.`, 'success');
         } catch (error) {
           console.error(`Error downloading video from ${urlObject.title}:`, error);

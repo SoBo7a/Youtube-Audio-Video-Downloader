@@ -8,6 +8,8 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { shell } from 'electron';
+import ytdl from 'ytdl-core';
+import sanitize from 'sanitize-filename';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const tempDir = app.getPath('temp');
@@ -17,19 +19,6 @@ const versionFilePath = path.join(tempDir, 'youtube-video-audio-downloader-versi
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
-
-let expressServer;
-
-// Function to start the Express server
-function startExpressServer() {
-  const child_process = require('child_process');
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    expressServer = child_process.spawn('node', ['src/modules/fileHandler.js']);
-  } else {
-    const filePath = path.join(__dirname, '..', 'fileHandler.js');
-    expressServer = child_process.spawn('node', [filePath]);
-  }
-}
 
 async function createWindow() {
   // Create the browser window.
@@ -49,6 +38,53 @@ async function createWindow() {
   // Hide default Electron Menu
   // const menu = Menu.buildFromTemplate([]);
   // Menu.setApplicationMenu(menu);
+
+  ipcMain.on('download-video', async (event, { videoUrl, quality, audioOnly }) => {
+    try {
+      const videoInfo = await ytdl.getInfo(videoUrl);
+      const videoTitle = videoInfo.videoDetails.title;
+      const sanitizedVideoTitle = sanitize(videoTitle);
+  
+      const userDataPath = path.join(os.homedir(), 'AppData', 'Local', 'YoutubeDownloader');
+      const settingsFilePath = path.join(userDataPath, 'settings.json');
+  
+      // Read the settings file
+      const data = fs.readFileSync(settingsFilePath, 'utf8');
+      const settings = JSON.parse(data);
+  
+      let downloadMode = 'audioandvideo';
+      let downloadPath;
+  
+      if (audioOnly) {
+        downloadMode = 'audioonly';
+        downloadPath = settings.audioDownloadPath || path.join(__dirname, 'audio');
+      } else {
+        downloadPath = settings.videoDownloadPath || path.join(__dirname, 'video');
+      }
+  
+      const videoPath = path.join(downloadPath, `${sanitizedVideoTitle}.${audioOnly ? 'mp3' : 'mp4'}`);
+  
+      const stream = ytdl(videoUrl, {
+        filter: downloadMode,
+        quality: quality,
+      });
+  
+      stream.pipe(fs.createWriteStream(videoPath));
+  
+      stream.on('end', () => {
+        console.log('Video downloaded and saved:', videoPath);
+        event.sender.send('download-video-success', 'Video downloaded successfully.');
+      });
+  
+      stream.on('error', (error) => {
+        console.error('Error during download:', error);
+        event.sender.send('download-video-error', 'Error saving video.');
+      });
+    } catch (error) {
+      console.error('Error downloading video:', error);
+      event.sender.send('download-video-error', 'Error saving video.');
+    }
+  });
 
   autoUpdater.on('error', (error) => {
     win.webContents.send('update_error', error);
@@ -222,7 +258,6 @@ app.on('ready', async () => {
     }
   }
   createWindow();
-  startExpressServer();
 });
 
 // Exit cleanly on request from the parent process in development mode.

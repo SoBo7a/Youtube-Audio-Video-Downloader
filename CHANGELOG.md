@@ -6,3 +6,5 @@
 - Moved settings-file handling to Electron/IPC
 - Added About page
 - implemented autoupdate
+- Moved download logic to electron/ipc
+- small quality improvements

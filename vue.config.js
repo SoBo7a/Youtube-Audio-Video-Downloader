@@ -57,10 +57,6 @@ module.exports = {
         },
         extraFiles: [
           {
-            from: './src/modules/fileHandler.js',
-            to: './resources/', 
-          },
-          {
             "from": "LICENSE.txt",
             "to": "LICENSE.txt",
             "filter": ["**/*"]
