@@ -4,3 +4,4 @@
 - Added Icons
 - Code refactoring
 - Moved settings-file handling to Electron/IPC
+- Added About page

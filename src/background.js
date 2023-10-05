@@ -6,6 +6,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import { shell } from 'electron';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Scheme must be registered before the app is ready

@@ -1,6 +1,7 @@
 const express = require('express');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
+const os = require('os')
 const path = require('path');
 const sanitize = require('sanitize-filename');
 const app = express();
@@ -19,19 +20,26 @@ app.post('/downloadVideo', async (req, res) => {
     const { videoUrl, quality, audioOnly } = req.body;
     const videoInfo = await ytdl.getInfo(videoUrl);
     const videoTitle = videoInfo.videoDetails.title;
-
-    // Sanitize the video title to remove special characters
     const sanitizedVideoTitle = sanitize(videoTitle);
 
-    let videoPath;
+    const userDataPath = path.join(os.homedir(), 'AppData', 'Local', 'YoutubeDownloader');
+    const settingsFilePath = path.join(userDataPath, 'settings.json');
+
+    // Read the settings file
+    const data = fs.readFileSync(settingsFilePath, 'utf8');
+    const settings = JSON.parse(data);
+
     let downloadMode = 'audioandvideo';
+    let downloadPath;
 
     if (audioOnly) {
       downloadMode = 'audioonly';
-      videoPath = path.join(__dirname, 'audio', `${sanitizedVideoTitle}.mp3`);
+      downloadPath = settings.audioDownloadPath || path.join(__dirname, 'audio');
     } else {
-      videoPath = path.join(__dirname, 'video', `${sanitizedVideoTitle}.mp4`);
+      downloadPath = settings.videoDownloadPath || path.join(__dirname, 'video');
     }
+
+    const videoPath = path.join(downloadPath, `${sanitizedVideoTitle}.${audioOnly ? 'mp3' : 'mp4'}`);
 
     const stream = ytdl(videoUrl, {
       filter: downloadMode,
