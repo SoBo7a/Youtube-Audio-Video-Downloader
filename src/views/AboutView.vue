@@ -17,13 +17,29 @@
         <strong>License: </strong>
         <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>
       </p>
-      <p><strong>Version: </strong> {{ appVersion }}</p>
+      <p>
+        <strong>Version: </strong>
+        <a href="https://github.com/SoBo7a/Youtube-Audio-Video-Downloader/releases" target="_blank">
+          {{ appVersion }} 
+        </a> 
+        <font-awesome-icon
+            :icon="['fa', 'arrows-rotate']"
+            @click="checkForUpdates"
+            class="fa-icon update-icon"
+            :class="{ 'rotate': isUpdating }"
+        />
+      </p>
+      <div v-if="showNoUpdateMsg" class="update-not-found pulsing" style="color: green;"><strong>You already use the latest version...</strong></div>
+      <div v-if="showErrorMsg" class="error-msg pulsing" style="color: red;"><strong>Failed to check for updates...</strong></div>
       <p>
         This application is open-source and hosted on GitHub. You can find the source code
         and contribute to the project by visiting the GitHub repository:
-        <a href="https://github.com/SoBo7a/Youtube-Audio-Video-Downloader" target="_blank"
-          >GitHub Repository</a
+        <a
+          href="https://github.com/SoBo7a/Youtube-Audio-Video-Downloader"
+          target="_blank"
         >
+          GitHub Repository
+        </a>
       </p>
       <p class="disclaimer">
         Disclaimer: YouTube Downloader is an independent project and is not affiliated
@@ -36,12 +52,83 @@
 
 <script>
 import packageJson from "../../package.json";
+import { ipcRenderer } from "electron";
 
 export default {
   data() {
     return {
       appVersion: packageJson.version,
-    };
+      showNoUpdateMsg: false,
+      isUpdating: false,
+      showErrorMsg: false,
+
+      timeToUpdateTimeout: 15000,
+      timeToShowMsg: 10000,
+    }
+  },
+  methods: {
+    checkForUpdates() {
+      if (this.isUpdating) {
+        return;
+      }
+
+      this.isUpdating = true;
+      ipcRenderer.send("check-for-updates");
+
+      const updateTimeout = setTimeout(() => {
+        this.handleUpdateTimeout();
+      }, this.timeToUpdateTimeout);
+
+      ipcRenderer.on("update_error", () => {
+        clearTimeout(updateTimeout);
+        this.handleUpdateError();
+      });
+
+      ipcRenderer.on("update_not_found", () => {
+        clearTimeout(updateTimeout);
+        this.handleUpdateNotFound();
+      });
+
+      ipcRenderer.on("update_available", () => {
+        clearTimeout(updateTimeout);
+        this.handleUpdateAvailable();
+      });
+    },
+    handleUpdateTimeout() {
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = true;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showErrorMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateError() {
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = true;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showErrorMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateNotFound() {
+      this.showNoUpdateMsg = true;
+      this.showErrorMsg = false;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showNoUpdateMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateAvailable() {
+      this.isUpdating = false;
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = false;
+    },
   },
 };
 </script>

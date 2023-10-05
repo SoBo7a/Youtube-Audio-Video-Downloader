@@ -1,6 +1,7 @@
 'use strict';
 
 import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer';
 import path from 'path';
@@ -8,6 +9,9 @@ import fs from 'fs';
 import os from 'os';
 import { shell } from 'electron';
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const tempDir = app.getPath('temp');
+const versionFilePath = path.join(tempDir, 'youtube-video-audio-downloader-version.txt');
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -45,6 +49,65 @@ async function createWindow() {
   // Hide default Electron Menu
   // const menu = Menu.buildFromTemplate([]);
   // Menu.setApplicationMenu(menu);
+
+  autoUpdater.on('error', (error) => {
+    win.webContents.send('update_error', error);
+  })
+
+  win.once('ready-to-show', () => {
+    // Check if update was installed
+    if (fs.existsSync(versionFilePath)) {
+      if (fs.readFileSync(versionFilePath, 'utf8') !== app.getVersion()) {
+        let changelogPath
+        if (process.env.WEBPACK_DEV_SERVER_URL) {
+          changelogPath = path.join(__dirname, '..', 'CHANGELOG.md');
+        } else {
+          changelogPath = path.join(__dirname, '..', '..', 'CHANGELOG.md');
+        }
+        const releaseNotes = fs.readFileSync(changelogPath, 'utf8');
+        const version = app.getVersion();
+        win.webContents.send('app-updated', {
+          version: version,
+          releaseNotes: releaseNotes,
+        });
+      }
+      fs.unlinkSync(versionFilePath);
+    }
+
+    autoUpdater.checkForUpdates();
+  });
+
+  ipcMain.on("check-for-updates", () => {
+    autoUpdater.on("update-not-available", () => {
+      win.webContents.send("update_not_found");
+  });
+  
+    autoUpdater.checkForUpdates();
+  });
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send('update_available');
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    const downloadProgress = progressObj.percent;
+    win.webContents.send('download-progress', downloadProgress);
+  });
+  
+  let updateDownloaded = false;
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update_downloaded');
+    updateDownloaded = true;
+
+    // Create Text file with current version to use for check, if update was installed
+    fs.writeFileSync(versionFilePath, app.getVersion());
+  });
+  
+  ipcMain.on('install-now', () => {
+    setImmediate(() => {
+      autoUpdater.quitAndInstall(true, true);
+    })
+  });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);

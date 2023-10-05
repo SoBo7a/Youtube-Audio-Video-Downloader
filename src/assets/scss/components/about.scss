@@ -14,11 +14,13 @@
       line-height: 1.5;
   
       a {
+        color: var(--button-bg);
         font-weight: 700;
         opacity: 0.9;
         text-decoration: none;
   
         &:hover {
+          color: var(--button-hover-bg);
           text-decoration: underline;
           opacity: 1;
         }
@@ -29,5 +31,11 @@
       font-style: italic;
       color: var(--disclaimer-text-color);
       margin-top: 20px;
+    }
+
+    .update-icon {
+        margin-left: 5px;
+        font-size: 16px;
+        cursor: pointer;
     }
 }

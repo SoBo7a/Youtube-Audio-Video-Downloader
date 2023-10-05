@@ -1,6 +1,9 @@
 @import './variables.scss';
+@import './animations.scss';
 
+@import './components/app.scss';
 @import './components/home.scss';
 @import './components/notification.scss';
 @import './components/settings.scss';
 @import './components/about.scss';
+@import './components/update-notification.scss';

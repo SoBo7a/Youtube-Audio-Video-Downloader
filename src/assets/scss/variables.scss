@@ -1,4 +1,8 @@
 :root {
+    --background-color-primary: #f7f7f799;
+    --background-color-secondary: #000;
+    --text-color-primary: #000;
+    --text-color-secondary: #fff;
     --input-color-primary: #ccc;
     --input-border-color: #afafaf;
     --button-bg: #158600;
@@ -8,4 +12,6 @@
     --notification-success-bg: #28a745;
     --notification-error-bg: #dc3545;
     --disclaimer-text-color: #afafaf;
+    --modal-background-color: #ececece1;
+
 }

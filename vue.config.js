@@ -57,8 +57,28 @@ module.exports = {
         },
         extraFiles: [
           {
-            from: './src/modules/fileHandler.js', // Adjust the source path as needed
-            to: './resources/', // Adjust the destination path as needed
+            from: './src/modules/fileHandler.js',
+            to: './resources/', 
+          },
+          {
+            "from": "LICENSE.txt",
+            "to": "LICENSE.txt",
+            "filter": ["**/*"]
+          },
+          {
+            "from": "README.md",
+            "to": "README.md",
+            "filter": ["**/*"]
+          },
+          {
+            "from": "CHANGELOG.md",
+            "to": "CHANGELOG.md",
+            "filter": ["**/*"]
+          },
+          {
+            "from": "ThirdPartyNotices.txt",
+            "to": "ThirdPartyNotices.txt",
+            "filter": ["**/*"]
           },
         ],
       },
