@@ -31,7 +31,7 @@ module.exports = {
       builderOptions: {
         appId: 'youtube-audio-video-downloader',
         productName: 'Youtube Audio/Video Downloader',
-        buildVersion: '0.8.0',
+        buildVersion: '0.9.0',
         "publish": [
           {
             "provider": "github",

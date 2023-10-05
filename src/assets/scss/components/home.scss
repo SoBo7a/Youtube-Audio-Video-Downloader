@@ -5,13 +5,13 @@
 
   .download-mode-selector,
   .add-url-button {
-    padding: 10px 15px;
+    padding: 9px 15px;
     margin-right: 10px;
     margin-bottom: 10px;
     font-weight: bold;
     cursor: pointer;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
-    background-color: #fff;
     transition: background-color 0.3s;
 
     &:hover {
@@ -29,6 +29,13 @@
     border-radius: 5px;
     margin-right: 10px;
     margin-bottom: 10px; 
+
+    &:hover {
+       background-color: #f0f0f0;
+    }
+    &:active {
+       background-color: #ccc;
+    }
   }
 
   select {
@@ -38,6 +45,13 @@
     border-radius: 5px;
     margin-right: 10px;
     margin-bottom: 10px; 
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+    &:active {
+      background-color: #ccc;
+    }
   }
 
   button {
@@ -75,12 +89,19 @@
       background-color: #f0f0f0;
       border: 1px solid var(--input-color-primary);
       border-radius: 5px;
-      padding: 5px 10px;
-      margin-right: 10px;
+      padding: 10px 10px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      a {
+        color: var(--button-bg);
+
+        &:hover {
+            color: var(--button-hover-bg);
+        }
+      }
 
       .remove-icon {
         margin-left: 5px;

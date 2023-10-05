@@ -1,5 +1,10 @@
 ## Changelog - v0.8.0
 
+- small design improvements
+
+
+## Changelog - v0.8.0
+
 - Initial Pre-Release
 - Added Icons
 - Code refactoring
