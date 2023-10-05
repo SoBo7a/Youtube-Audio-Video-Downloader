@@ -1,0 +1,44 @@
+.settings-page {
+    padding: 20px;
+  
+    .setting {
+      margin-bottom: 20px;
+      
+      label {
+          text-align: start;
+          font-weight: bold;
+          display: block;
+          margin-bottom: 5px;
+        }
+  
+      .input-with-button {
+        display: flex;
+        align-items: center;
+  
+        input {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid var(--input-color-primary);
+          border-radius: 5px;
+          margin-right: 10px;
+          margin-bottom: 10px;
+        }
+  
+        button {
+          margin-left: 10px;
+          margin-bottom: 10px;
+          padding: 12px 20px;
+          background-color: var(--button-bg);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: var(--button-hover-bg);
+          }
+        }
+      }
+    }
+  }
+  

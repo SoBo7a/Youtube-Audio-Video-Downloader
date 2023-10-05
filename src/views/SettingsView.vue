@@ -28,128 +28,50 @@
 </template>
 
 <script>
+const { ipcRenderer } = require('electron');
+
 export default {
   data() {
     return {
-      audioDownloadPath: '', // Data property for audio download path
-      videoDownloadPath: '', // Data property for video download path
+      audioDownloadPath: '',
+      videoDownloadPath: '',
     };
   },
   created() {
-    // Fetch settings data when the component is created
+    ipcRenderer.on('folder-selected', (event, { target, folderPath }) => {
+      if (target === 'audioDownloadPath') {
+        this.audioDownloadPath = folderPath;
+      } else if (target === 'videoDownloadPath') {
+        this.videoDownloadPath = folderPath;
+      }
+
+      this.updateSettings();
+    });
+
     this.fetchSettings();
   },
   methods: {
-    // Method to fetch settings data from the API endpoint
     fetchSettings() {
-      fetch('http://localhost:3000/api/settings')
-        .then((response) => response.json())
-        .then((data) => {
-          // Update the component data properties with the fetched settings
-          this.audioDownloadPath = data.audioDownloadPath;
-          this.videoDownloadPath = data.videoDownloadPath;
-        })
-        .catch((error) => {
-          console.error('Error fetching settings:', error);
-        });
+      // Send an IPC message to the main process to fetch settings
+      ipcRenderer.send('fetch-settings');
+
+      // Listen for the 'settings-fetched' event from the main process
+      ipcRenderer.once('settings-fetched', (event, settings) => {
+        this.audioDownloadPath = settings.audioDownloadPath;
+        this.videoDownloadPath = settings.videoDownloadPath;
+      });
     },
     updateSettings() {
-      // Create an object with the updated settings data
       const updatedSettings = {
         audioDownloadPath: this.audioDownloadPath,
         videoDownloadPath: this.videoDownloadPath,
-        // Add other settings properties as needed
       };
 
-      // Send an HTTP POST request to update the settings
-      fetch('http://localhost:3000/api/settings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedSettings),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Settings updated:', data);
-        })
-        .catch((error) => {
-          console.error('Error updating settings:', error);
-        });
-    },
-    updateAudioPath() {
-      // Handle the update of audio download path
-      // You can save this path to your application state or a configuration file
-      console.log('Updated audio download path:', this.audioDownloadPath);
-    },
-    updateVideoPath() {
-      // Handle the update of video download path
-      // You can save this path to your application state or a configuration file
-      console.log('Updated video download path:', this.videoDownloadPath);
+      ipcRenderer.send('update-settings', updatedSettings);
     },
     openFolderDialog(target) {
-      const inputField = document.createElement('input');
-      inputField.type = 'file';
-      inputField.setAttribute('webkitdirectory', ''); // Add the webkitdirectory attribute
-      inputField.addEventListener('change', (event) => {
-        if (event.target.files && event.target.files.length > 0) {
-          const selectedPath = event.target.files[0].path.split('\\');
-          selectedPath.pop(); // Remove the last item (the filename)
-          const folderPath = selectedPath.join('/');
-          if (target === 'audioDownloadPath') {
-            this.audioDownloadPath = folderPath;
-          } else if (target === 'videoDownloadPath') {
-            this.videoDownloadPath = folderPath;
-          }
-
-          this.updateSettings()
-        }
-      });
-      inputField.click();
+      ipcRenderer.send('open-folder-dialog', target);
     },
   },
 };
 </script>
-
-<style scoped>
-/* Add your component-specific styles here */
-.settings-page {
-  padding: 20px;
-}
-
-.setting {
-  margin-bottom: 20px;
-}
-
-.input-with-button {
-  display: flex;
-  align-items: center;
-}
-
-label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-</style>

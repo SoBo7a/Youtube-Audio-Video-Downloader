@@ -89,6 +89,7 @@ export default {
         const url = urlObject.url;
         try {
           // Make a POST request to your Express server to trigger the video download
+          // eslint-disable-next-line
           const response = await axios.post('http://localhost:3000/downloadVideo', {
             videoUrl: url,
             quality: this.videoQuality, // Pass the selected quality to the server
@@ -96,7 +97,6 @@ export default {
           });
 
           // Handle the response from the server
-          console.log(response.data);
           this.showNotification(`Video from ${urlObject.title} downloaded successfully.`, 'success');
         } catch (error) {
           console.error(`Error downloading video from ${urlObject.title}:`, error);
@@ -122,99 +122,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-/* Add your component-specific styles here */
-
-.input-container {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-}
-
-.download-mode-selector,
-.add-url-button {
-  padding: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #fff;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-  &:active {
-    background-color: #ccc;
-  }
-}
-
-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 10px; /* Add space between input and list */
-}
-
-select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 10px; /* Add space between select and list */
-}
-
-button {
-  padding: 12px 20px;
-  margin-bottom: 10px;
-  background-color: #158600;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1cb901;
-}
-
-/* Loading indicator styles */
-button[disabled] {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* URL list styles */
-.url-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.url-item {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.remove-icon {
-  margin-left: 5px;
-  cursor: pointer;
-  font-size: 18px;
-  color: #dc3545; /* Red color */
-}
-
-.remove-icon:hover {
-  color: #a52a2a; /* Darker red on hover */
-}
-</style>

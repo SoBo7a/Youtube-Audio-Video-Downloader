@@ -2,3 +2,5 @@
 
 - Initial Pre-Release
 - Added Icons
+- Code refactoring
+- Moved settings-file handling to Electron/IPC
