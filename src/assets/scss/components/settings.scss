@@ -21,6 +21,32 @@
           font-size: 14px;
           font-weight: normal;
         }
+
+        input[type='radio']:after {
+            width: 10px;
+            height: 10px;
+            border-radius: 15px;
+            left: -1px;
+            position: relative;
+            background-color: var(--input-color-primary);
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid var(--input-color-primary);
+        }
+    
+        input[type='radio']:checked:after {
+            width: 10px;
+            height: 10px;
+            border-radius: 15px;
+            left: -1px;
+            position: relative;
+            background-color: var(--button-bg);
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid var(--text-color-primary);
+        }
       }
   
       .input-with-button {

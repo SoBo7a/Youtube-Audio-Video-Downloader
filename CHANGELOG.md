@@ -1,6 +1,8 @@
 ## Changelog - v0.9.2
 
 - improved dark theme colors
+- right click on input to paste URL
+- design improvements
 
 
 ## Changelog - v0.9.2
