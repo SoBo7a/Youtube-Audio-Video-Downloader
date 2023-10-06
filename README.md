@@ -14,6 +14,8 @@ Please note that YouTube Video Downloader is not affiliated with or endorsed by 
 - Dark mode for a comfortable viewing experience.
 - And more features to come...
 
+<img src="screenshots/home.png" alt="Alt Text" width="400"> <img src="screenshots/settings.png" alt="Alt Text" width="400">
+
 <br>
 
 ## Installation

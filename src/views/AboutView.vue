@@ -6,11 +6,11 @@
 <template>
   <div class="about">
     <div class="about-header">
-      <h2>About YouTube Audio/Video Downloader</h2>
+      <h2>About</h2>
     </div>
     <div class="about-content">
       <p>
-        YouTube Downloader is a powerful application that allows you to download both
+        YouTube Audio/Video Downloader is a application that allows you to download both
         audio and video content from YouTube. Save your favorite videos and music for
         offline enjoyment.
       </p>
