@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) SoBo7a. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 const webpack = require('webpack'); // Import webpack
 
 module.exports = {
@@ -31,7 +36,7 @@ module.exports = {
       builderOptions: {
         appId: 'youtube-audio-video-downloader',
         productName: 'Youtube Audio/Video Downloader',
-        buildVersion: '0.9.1',
+        buildVersion: '0.9.2',
         "publish": [
           {
             "provider": "github",

@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) SoBo7a. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 body {
     height: 100%;
     width: 100%;
@@ -5,6 +10,15 @@ body {
     color: var(--text-color-primary);
     overflow-x: hidden;
 }
+
+body *:not(input) {
+  user-select: none;
+}
+
+input {
+  user-select: text;
+}
+
 
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
