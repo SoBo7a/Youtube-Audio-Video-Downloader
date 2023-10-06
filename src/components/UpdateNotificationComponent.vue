@@ -1,4 +1,9 @@
- <template>
+<!---------------------------------------------------------------------------------------------
+ *  Copyright (c) SoBo7a. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *-------------------------------------------------------------------------------------------->
+
+<template>
   <div class="backdrop" v-if="state === 'updated'" @click="closeNotification"></div>
 
   <div

@@ -1,6 +1,7 @@
 ## Changelog - v0.9.2
 
-- 
+- Finished README.md
+- Finished licensing
 
 
 ## Changelog - v0.9.1

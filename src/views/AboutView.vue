@@ -1,3 +1,8 @@
+<!---------------------------------------------------------------------------------------------
+ *  Copyright (c) SoBo7a. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *-------------------------------------------------------------------------------------------->
+
 <template>
   <div class="about">
     <div class="about-header">
@@ -46,6 +51,7 @@
         with, endorsed by, or connected to YouTube in any way. YouTube is a registered
         trademark of Google LLC.
       </p>
+      <a href="https://www.flaticon.com/free-icons/video" title="video icons" style="font-size: small;">Application icon created by Freepik - Flaticon</a>
     </div>
   </div>
 </template>
