@@ -6,6 +6,7 @@
 - Add URLs to download list by pressing enter
 - Now downloads URL from input field without adding to list
 - URLs are now validated before attempting to download
+- Disabled highlighting of text (except input fields)
 
 ## Changelog - v0.9.1
 

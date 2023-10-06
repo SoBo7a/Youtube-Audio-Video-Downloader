@@ -11,6 +11,15 @@ body {
     overflow-x: hidden;
 }
 
+body *:not(input) {
+  user-select: none;
+}
+
+input {
+  user-select: text;
+}
+
+
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
