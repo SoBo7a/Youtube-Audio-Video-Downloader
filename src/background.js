@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, protocol, BrowserWindow, ipcMain, dialog, nativeTheme } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain, dialog, nativeTheme, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer';
@@ -36,8 +36,8 @@ async function createWindow() {
   });
 
   // Hide default Electron Menu
-  // const menu = Menu.buildFromTemplate([]);
-  // Menu.setApplicationMenu(menu);
+  const menu = Menu.buildFromTemplate([]);
+  Menu.setApplicationMenu(menu);
 
   ipcMain.on('theme-changed', (event, theme) => {
     // Set the app's theme based on the received theme or the system preference

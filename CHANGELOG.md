@@ -1,3 +1,9 @@
+## Changelog - v0.9.1
+
+- top-menu hidden
+- small design improvements
+
+
 ## Changelog - v0.9.0
 
 - small design improvements
