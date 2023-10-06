@@ -1,7 +1,7 @@
 {
   "name": "youtube-audio-video-downloader",
   "description": "Download Audio and Video Files from Youtube URLs.",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "homepage": "https://github.com/SoBo7a/Youtube-Audio-Video-Downloader",
   "author": "SoBo7a",
   "license": "MIT",
