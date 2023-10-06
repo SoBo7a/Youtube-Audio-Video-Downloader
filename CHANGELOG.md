@@ -2,7 +2,10 @@
 
 - Finished README.md
 - Finished licensing
-
+- Fixed spelling error in notifications
+- Add URLs to download list by pressing enter
+- Now downloads URL from input field without adding to list
+- URLs are now validated before attempting to download
 
 ## Changelog - v0.9.1
 

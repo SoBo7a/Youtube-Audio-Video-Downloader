@@ -4,8 +4,6 @@ YouTube Video Downloader is an independent desktop application developed using V
 
 Please note that YouTube Video Downloader is not affiliated with or endorsed by YouTube or its parent company.
 
-This program comes with ABSOLUTELY NO WARRANTY.
-
 <br>
 
 ## Features

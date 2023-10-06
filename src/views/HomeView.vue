@@ -8,7 +8,11 @@
     <h1>YouTube Audio/Video Downloader</h1>
     <div class="input-container">
       <!-- Input field for entering URLs -->
-      <input v-model="videoUrl" placeholder="Enter YouTube Video URL" />
+      <input
+        v-model="videoUrl"
+        placeholder="Enter YouTube Video URL"
+        @keyup.enter="addUrlToList"
+      />
       <div class="add-url-button" @click="addUrlToList" title="Add another URL">+</div>
 
       <select v-model="videoQuality" title="Select Quality">
@@ -30,7 +34,7 @@
         <div class="url-list">
           <div v-for="(url, index) in urlList" :key="index" class="url-item">
             <a :href="url.url" target="_blank">{{ url.title }}</a>
-            <font-awesome-icon :icon="['fas', 'times']" @click="removeUrlFromList(index)" class="remove-icon" />
+            <font-awesome-icon :icon="['fas', 'times']" @click="removeUrlFromList(index)" class="remove-icon" title="Remove from List" />
           </div>
         </div>
       </div>
@@ -55,17 +59,25 @@ export default {
   data() {
     return {
       videoUrl: '',
-      videoQuality: 'highest', // Default to highest quality
+      videoQuality: 'highest',
       notificationMessage: '',
       notificationType: '',
-      downloadAudioOnly: false, // Initialize as downloading video
-      downloading: false, // Track the download state
-      urlList: [], // List of URLs to download
+      downloadAudioOnly: false,
+      downloading: false,
+      urlList: [],
+      validUrlPattern: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//,
     };
   },
   methods: {
+    validateUrl() {
+      if (this.validUrlPattern.test(this.videoUrl)) {
+        return true
+      }
+      this.showNotification('This is not a valid YouTube URL.', 'error')
+      return false
+    },
     async addUrlToList() {
-      if (this.videoUrl) {
+      if (this.videoUrl && this.validateUrl(this.videoUrl)) {
         try {
           // Make an HTTP GET request to the video URL to fetch the HTML content
           const response = await axios.get(this.videoUrl);
@@ -80,13 +92,17 @@ export default {
           console.error('Error fetching video details:', error);
           this.showNotification('Error fetching video details.', 'error');
         }
+      } else if (this.videoUrl.length === 0) {
+        this.showNotification('Nothing to add.', 'error');
       }
     },
     removeUrlFromList(index) {
       this.urlList.splice(index, 1);
     },
     async downloadVideos() {
-      if (this.urlList.length === 0) {
+      if (this.videoUrl.length !== 0) {
+        await this.addUrlToList()
+      } else if (this.videoUrl.length === 0 && this.urlList.length === 0) {
         this.showNotification('Please add at least one URL to download.', 'error');
         return;
       }
@@ -104,10 +120,10 @@ export default {
             audioOnly: this.downloadAudioOnly, // Pass the download mode
           });
 
-          this.showNotification(`Video from ${urlObject.title} downloaded successfully.`, 'success');
+          this.showNotification(`${urlObject.title} downloaded successfully.`, 'success');
         } catch (error) {
-          console.error(`Error downloading video from ${urlObject.title}:`, error);
-          this.showNotification(`Error downloading video from ${urlObject.title}.`, 'error');
+          console.error(`Error downloading ${urlObject.title}:`, error);
+          this.showNotification(`Error downloading ${urlObject.title}.`, 'error');
         }
       }
 
