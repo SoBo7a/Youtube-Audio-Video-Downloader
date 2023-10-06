@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain, dialog, nativeTheme } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer';
@@ -38,6 +38,15 @@ async function createWindow() {
   // Hide default Electron Menu
   // const menu = Menu.buildFromTemplate([]);
   // Menu.setApplicationMenu(menu);
+
+  ipcMain.on('theme-changed', (event, theme) => {
+    // Set the app's theme based on the received theme or the system preference
+    if (theme === 'dark') {
+      win.webContents.executeJavaScript('document.body.classList.add("dark-mode");');
+    } else {
+      win.webContents.executeJavaScript('document.body.classList.remove("dark-mode");');
+    }
+  });
 
   ipcMain.on('download-video', async (event, { videoUrl, quality, audioOnly }) => {
     try {
@@ -182,10 +191,8 @@ function getSettingsFilePath() {
   return path.join(userDataPath, 'settings.json');
 }
 
-// Function to read settings from the file
 function readSettings() {
   const settingsFilePath = getSettingsFilePath();
-  console.log(settingsFilePath)
 
   try {
     if (fs.existsSync(settingsFilePath)) {
@@ -196,11 +203,11 @@ function readSettings() {
     console.error('Error reading settings:', error);
   }
 
-  // If the settings file doesn't exist or there's an error, return default settings
   return {
     audioDownloadPath: '',
     videoDownloadPath: '',
-  };
+    theme: 'light',
+  }
 }
 
 // Function to write settings to the file
@@ -221,8 +228,6 @@ ipcMain.on('fetch-settings', (event) => {
 
 ipcMain.on('update-settings', (event, updatedSettings) => {
   writeSettings(updatedSettings);
-
-  // event.reply('settings-updated', 'Settings updated successfully');
 });
 
 ipcMain.on('open-folder-dialog', (event, target) => {

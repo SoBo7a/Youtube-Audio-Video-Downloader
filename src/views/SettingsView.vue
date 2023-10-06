@@ -1,6 +1,32 @@
 <template>
   <div class="settings-page">
     <div class="setting">
+      <label>Theme:</label>
+      <div class="theme-radio">
+        <label>
+          <input
+            type="radio"
+            v-model="theme"
+            value="light"
+            @change="updateSettings"
+          />
+          Light
+        </label>
+      </div>
+      <div class="theme-radio">
+        <label>
+          <input
+            type="radio"
+            v-model="theme"
+            value="dark"
+            @change="updateSettings"
+          />
+          Dark
+        </label>
+      </div>
+    </div>
+
+    <div class="setting">
       <label for="audioPath">Audio Download Path:</label>
       <div class="input-with-button">
         <input
@@ -12,6 +38,7 @@
         <button @click="openFolderDialog('audioDownloadPath')">Browse</button>
       </div>
     </div>
+
     <div class="setting">
       <label for="videoPath">Video Download Path:</label>
       <div class="input-with-button">
@@ -35,6 +62,7 @@ export default {
     return {
       audioDownloadPath: '',
       videoDownloadPath: '',
+      theme: 'light',
     };
   },
   created() {
@@ -52,25 +80,24 @@ export default {
   },
   methods: {
     fetchSettings() {
-      // Send an IPC message to the main process to fetch settings
       ipcRenderer.send('fetch-settings');
-
-      // Listen for the 'settings-fetched' event from the main process
       ipcRenderer.once('settings-fetched', (event, settings) => {
         this.audioDownloadPath = settings.audioDownloadPath;
         this.videoDownloadPath = settings.videoDownloadPath;
+        this.theme = settings.theme || 'light';
       });
     },
     updateSettings() {
       const updatedSettings = {
         audioDownloadPath: this.audioDownloadPath,
         videoDownloadPath: this.videoDownloadPath,
+        theme: this.theme,
       };
 
       ipcRenderer.send('update-settings', updatedSettings);
-    },
-    openFolderDialog(target) {
-      ipcRenderer.send('open-folder-dialog', target);
+
+      // Emit a custom event to notify the main process of theme change
+      ipcRenderer.send('theme-changed', this.theme);
     },
   },
 };

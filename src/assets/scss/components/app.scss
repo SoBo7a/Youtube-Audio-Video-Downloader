@@ -1,3 +1,11 @@
+body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--background-color-primary);
+    color: var(--text-color-primary);
+    overflow-x: hidden;
+}
+
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

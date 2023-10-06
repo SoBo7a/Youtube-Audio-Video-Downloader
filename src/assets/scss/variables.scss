@@ -1,4 +1,5 @@
 :root {
+    /* Light Mode Colors */
     --background-color-primary: #f7f7f799;
     --background-color-secondary: #000;
     --text-color-primary: #000;
@@ -13,5 +14,21 @@
     --notification-error-bg: #dc3545;
     --disclaimer-text-color: #afafaf;
     --modal-background-color: #ececece1;
+}
 
+.dark-mode {
+    --background-color-primary: #000;
+    --background-color-secondary: #333;
+    --text-color-primary: #fff;
+    --text-color-secondary: #000;
+    --input-color-primary: #555;
+    --input-border-color: #444;
+    --button-bg: #1cb901;
+    --button-hover-bg: #158600;
+    --remove-icon-color: #a52a2a;
+    --remove-icon-hover-color: #dc3545;
+    --notification-success-bg: #158600;
+    --notification-error-bg: #a52a2a;
+    --disclaimer-text-color: #777;
+    --modal-background-color: #333;
 }

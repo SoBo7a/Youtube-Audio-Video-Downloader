@@ -1,6 +1,7 @@
-## Changelog - v0.8.0
+## Changelog - v0.9.0
 
 - small design improvements
+- added dark mode
 
 
 ## Changelog - v0.8.0

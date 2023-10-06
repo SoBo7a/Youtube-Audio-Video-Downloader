@@ -3,13 +3,20 @@
   
     .setting {
       margin-bottom: 20px;
-      
+  
       label {
-          text-align: start;
-          font-weight: bold;
-          display: block;
-          margin-bottom: 5px;
+        text-align: start;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+  
+      .theme-radio {
+        label {
+          font-size: 14px;
+          font-weight: normal;
         }
+      }
   
       .input-with-button {
         display: flex;
