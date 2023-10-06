@@ -1,6 +1,6 @@
 ## Changelog - v0.9.2
 
-- 
+- improved dark theme colors
 
 
 ## Changelog - v0.9.2

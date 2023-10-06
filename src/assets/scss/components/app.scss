@@ -16,9 +16,14 @@ body *:not(input) {
 }
 
 input {
+  background-color: var(--input-color-primary);
+  border: 1px solid var(--input-color-primary);
   user-select: text;
 }
 
+input::placeholder {
+  color: #000;
+}
 
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
