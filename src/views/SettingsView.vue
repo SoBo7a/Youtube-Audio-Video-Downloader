@@ -104,6 +104,9 @@ export default {
       // Emit a custom event to notify the main process of theme change
       ipcRenderer.send('theme-changed', this.theme);
     },
+    openFolderDialog(target) {
+      ipcRenderer.send('open-folder-dialog', target);
+    },
   },
 };
 </script>
